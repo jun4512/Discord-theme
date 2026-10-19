@@ -1,1 +1,8 @@
-
+/* Chat Background Image */
+.chatContent_f75fb0 {
+    background-color: transparent !important;
+    background-image: url("https://i.ibb.co/BWHgPNS/7a50494f6bf4c6f5d29a87011fd9d671.jpg") !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
