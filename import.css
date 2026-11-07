@@ -1,0 +1,413 @@
+/**
+ * @name WallpaperGlass
+ * @author kkullugi
+ * @version 1.0.0
+ * @description 배경 이미지 + 영역 투명화 + 얇은 경계선. 텍스트/정보를 담은 최소 영역(입력창·버튼·배지·칭호·네임플레이트 등)과 2500px 이하 요소는 그대로 유지.
+ */
+
+/* ───────── 설정값 (여기만 바꾸면 됨) ───────── */
+:root {
+  --wg-image: url("https://i.ibb.co/YJqNhTq/wallpaperflare-com-wallpaper.jpg");
+  --wg-tint: rgba(0, 0, 0, 0);
+  --wg-border: 1px solid rgba(255, 255, 255, 0.18);
+  --wg-hover: rgba(255, 255, 255, 0.08);
+  --wg-selected: rgba(255, 150, 80, 0.22);
+  --wg-popup-tint: rgba(24, 22, 58, 0.62);
+
+  /* 영역별 색 (마지막 숫자가 불투명도) */
+  --wg-c-titlebar: rgba(18, 14, 48, 0.72);
+  --wg-c-guilds: rgba(34, 20, 90, 0.68);
+  --wg-c-channels: rgba(22, 52, 160, 0.60);
+  --wg-c-panels: rgba(96, 40, 150, 0.62);
+  --wg-c-chat-left: rgba(12, 10, 28, 0.75);
+  --wg-c-chat-right: rgba(12, 10, 28, 0);
+  --wg-c-chat: linear-gradient(to right, var(--wg-c-chat-left), var(--wg-c-chat-right));
+  --wg-c-chatheader: rgba(18, 14, 48, 0.50);
+  --wg-c-members: rgba(0, 92, 116, 0.40);
+
+  /* 별·반짝이·하트 무늬 (배경 그림의 노란 별에 맞춤) */
+  --wg-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cdefs%3E%3Cpath id='s' d='M0 -6Q0 0 6 0Q0 0 0 6Q0 0 -6 0Q0 0 0 -6Z'/%3E%3Cpath id='t' d='M0 -4.5L1.18 -1.12L4.76 -1.05L1.9 1.12L2.94 4.55L0 2.5L-2.94 4.55L-1.9 1.12L-4.76 -1.05L-1.18 -1.12Z'/%3E%3Cpath id='h' d='M0 3C-3 1 -4 -1 -2.5 -2.2C-1.3 -3.1 -0.3 -2.4 0 -1.6C0.3 -2.4 1.3 -3.1 2.5 -2.2C4 -1 3 1 0 3Z'/%3E%3C/defs%3E%3Cg fill='white' fill-opacity='0.22'%3E%3Cuse href='%23s' transform='translate(18 30) scale(1.5)'/%3E%3Cuse href='%23s' transform='translate(222 14) scale(1.1) rotate(20)'/%3E%3Cuse href='%23s' transform='translate(128 62) scale(1.8)'/%3E%3Cuse href='%23s' transform='translate(66 112) scale(1.2) rotate(30)'/%3E%3Cuse href='%23s' transform='translate(176 178) scale(1.6)'/%3E%3Cuse href='%23s' transform='translate(20 214) scale(1.4) rotate(15)'/%3E%3Cuse href='%23s' transform='translate(226 222) scale(1.1)'/%3E%3Ccircle cx='48' cy='50' r='1.5'/%3E%3Ccircle cx='110' cy='38' r='1.2'/%3E%3Ccircle cx='196' cy='44' r='1.7'/%3E%3Ccircle cx='96' cy='88' r='1.3'/%3E%3Ccircle cx='152' cy='102' r='1.6'/%3E%3Ccircle cx='234' cy='76' r='1.2'/%3E%3Ccircle cx='36' cy='102' r='1.4'/%3E%3Ccircle cx='44' cy='150' r='1.7'/%3E%3Ccircle cx='196' cy='130' r='1.3'/%3E%3Ccircle cx='8' cy='176' r='1.5'/%3E%3Ccircle cx='98' cy='200' r='1.2'/%3E%3Ccircle cx='140' cy='196' r='1.6'/%3E%3Ccircle cx='192' cy='208' r='1.3'/%3E%3Ccircle cx='122' cy='8' r='1.4'/%3E%3C/g%3E%3Cg fill='%23ffd23f' fill-opacity='0.3'%3E%3Cuse href='%23t' transform='translate(80 18) scale(1.6) rotate(15)'/%3E%3Cuse href='%23t' transform='translate(176 84) scale(1.3) rotate(-18)'/%3E%3Cuse href='%23t' transform='translate(14 128) scale(1.4) rotate(25)'/%3E%3Cuse href='%23t' transform='translate(224 118) scale(1.7) rotate(8)'/%3E%3Cuse href='%23t' transform='translate(116 160) scale(1.5) rotate(-25)'/%3E%3Cuse href='%23t' transform='translate(78 226) scale(1.3) rotate(20)'/%3E%3C/g%3E%3Cg fill='%23ff8fc8' fill-opacity='0.25'%3E%3Cuse href='%23h' transform='translate(160 32) scale(1.4) rotate(-12)'/%3E%3Cuse href='%23h' transform='translate(30 80) scale(1.6) rotate(10)'/%3E%3Cuse href='%23h' transform='translate(126 130) scale(1.5) rotate(-6)'/%3E%3Cuse href='%23h' transform='translate(64 172) scale(1.3) rotate(14)'/%3E%3Cuse href='%23h' transform='translate(214 160) scale(1.4) rotate(-10)'/%3E%3Cuse href='%23h' transform='translate(170 224) scale(1.6) rotate(8)'/%3E%3C/g%3E%3C/svg%3E");
+  --wg-pattern-size: 240px;
+
+  /* 블러 */
+  --wg-blur-chat: 2px;
+  --wg-blur-side: 6px;
+  --wg-blur-members: 6px;
+  --wg-blur-panels: 5px;
+  --wg-panels-radius: 18px;
+  --wg-popup-blur: 10px;
+}
+
+/* ───────── 1. 배경 이미지 ───────── */
+html, body { background: transparent !important; }
+
+#app-mount, .appMount_gEkNtR {
+  background: var(--wg-image) center / cover no-repeat fixed !important;
+}
+
+.bg_Fd0FEH, .app_QbT-Jy, .app_YRXZu0, .appAsidePanelWrapper_YRXZu0, .notAppAsidePanel_YRXZu0,
+.layers_Fd0FEH, .layer_Fd0FEH.baseLayer_Fd0FEH, .container_pog62O, .base_pog62O,
+.content_pog62O, .page_pog62O {
+  background: transparent !important;
+}
+
+/* ───────── 2. 상단 타이틀바 ───────── */
+.bar_3zSH5d.systemBar_3zSH5d { background: transparent !important; }
+.base_pog62O > .bar_3zSH5d {
+  background: var(--wg-c-titlebar) !important;
+  border-bottom: var(--wg-border) !important;
+}
+
+/* ───────── 3. 서버 목록 ───────── */
+.sidebar_pog62O { background: transparent !important; }
+.guilds_pog62O, .wrapper_5dqHTG, .tree_5dqHTG, .scroller_5dqHTG { background: transparent !important; }
+.guilds_pog62O {
+  background: var(--wg-c-guilds) !important;
+  border-right: var(--wg-border) !important;
+}
+
+/* ───────── 3-1. 서버 목록 숨김 + 왼쪽 끝 빛나는 막대에 커서 올리면 슬라이드 ───────── */
+:root {
+  --wg-guild-handle: var(--wg-guild-btn);
+  --wg-guild-top: 36px;
+  /* 정사각형 버튼: 크기, 세로 위치 */
+  --wg-guild-btn: 32px;
+  --wg-guild-btn-top: 50%;
+  --wg-discord-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z'/%3E%3C/svg%3E");
+}
+.guilds_pog62O {
+  position: fixed !important;
+  top: var(--wg-guild-top) !important;
+  bottom: 8px !important;
+  left: 0 !important;
+  height: auto !important;
+  z-index: 9999 !important;
+  overflow: visible !important;
+  border-radius: 0 16px 16px 0 !important;
+  transform: translateX(calc(-100% + var(--wg-guild-handle))) !important;
+  transition: transform 0.3s ease 0.2s, box-shadow 0.3s !important;
+}
+.guilds_pog62O > * {
+  border-radius: 0 16px 16px 0 !important;
+  overflow: hidden !important;
+}
+.guilds_pog62O:hover, .guilds_pog62O:focus-within {
+  transform: translateX(0) !important;
+  transition: transform 0.3s ease 0s, box-shadow 0.3s !important;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.55), 0 0 18px rgba(255,255,255,0.35), 6px 0 24px rgba(0,0,0,0.45) !important;
+}
+/* 접혀 있을 때: 서버 목록은 투명 + 클릭 통과, 정사각형 버튼만 보임 */
+.guilds_pog62O:not(:hover):not(:focus-within) {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  pointer-events: none !important;
+}
+.guilds_pog62O > * { transition: opacity 0.2s !important; }
+.guilds_pog62O:not(:hover):not(:focus-within) > * { opacity: 0 !important; }
+
+/* 정사각형 버튼 (디스코드 아이콘), 서버 목록 오른쪽 끝 안쪽 */
+.guilds_pog62O::after {
+  content: "" !important;
+  position: absolute !important;
+  left: auto !important;
+  right: 0 !important;
+  top: calc(var(--wg-guild-btn-top) - var(--wg-guild-btn) / 2) !important;
+  width: var(--wg-guild-btn) !important;
+  height: var(--wg-guild-btn) !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(255,255,255,0.6) !important;
+  border-left: none !important;
+  border-radius: 0 10px 10px 0 !important;
+  z-index: 2 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  background: var(--wg-discord-icon) center / 60% no-repeat, rgba(34, 20, 90, 0.85) !important;
+  box-shadow: 0 0 8px rgba(255,255,255,0.55), 0 0 16px rgba(190,210,255,0.35) !important;
+  animation: wg-guild-glow 3s ease-in-out infinite !important;
+  transition: opacity 0.2s !important;
+}
+/* 펼쳐지면 버튼은 숨김 (서버 아이콘을 가리지 않게) */
+.guilds_pog62O:is(:hover, :focus-within)::after {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  animation: none !important;
+}
+@keyframes wg-guild-glow {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.9; }
+}
+
+/* ───────── 4. 채널 목록 ───────── */
+.sidebarList_pog62O, .container_H5ozaj, .scroller_ysO7Gy { background: transparent !important; }
+.sidebarList_pog62O {
+  background: transparent !important;
+  border: none !important;
+  border-right: var(--wg-border) !important;
+}
+.sidebarList_pog62O > nav { background: var(--wg-c-channels) !important; }
+.container_XH4OpX, .header_XH4OpX { background: transparent !important; }
+.container_XH4OpX { border-bottom: var(--wg-border) !important; }
+.headerEllipseBackdrop_XH4OpX, .headerEllipseForeground_XH4OpX, .headerGlass_XH4OpX { display: none !important; }
+
+/* ───────── 5. 하단 사용자 패널 ───────── */
+.panels_pog62O, .panel_8eCwJY, .wrapper_9U6LUN, .container_g6VwXp { background: transparent !important; }
+.panels_pog62O {
+  background: var(--wg-c-panels) !important;
+  border: none !important;
+  border-top: var(--wg-border) !important;
+}
+.panel_8eCwJY, .wrapper_9U6LUN { border-bottom: var(--wg-border) !important; }
+
+/* ───────── 6. 채팅 영역 ───────── */
+.channelArea_z_gUBg, .chat_z_gUBg, .content_z_gUBg, .chatContent_z_gUBg, .messagesWrapper_8AE1Qq,
+.scroller_8AE1Qq, .subtitleContainer_z_gUBg, .title_z_gUBg, .container_ybUK7Z, .form_z_gUBg {
+  background: transparent !important;
+}
+.chat_z_gUBg {
+  background: var(--wg-c-chat) !important;
+  border: none !important;
+}
+.title_z_gUBg, .container_ybUK7Z {
+  border-bottom: var(--wg-border) !important;
+  box-shadow: none !important;
+}
+.title_z_gUBg { background: var(--wg-c-chatheader) !important; }
+.chatGradient_8AE1Qq { display: none !important; }
+.channelTextArea_2x8-Qn, .scrollableContainer_2x8-Qn, .scrollableContainer_2x8-Qn.themedBackground_2x8-Qn,
+.inner_2x8-Qn, .textArea_2x8-Qn { background: transparent !important; }
+.scrollableContainer_2x8-Qn { border: var(--wg-border) !important; }
+
+/* ───────── 7. 멤버 목록 ───────── */
+.container_86es0b, .membersWrap_86es0b, .members_86es0b { background: transparent !important; }
+.membersWrap_86es0b {
+  background: var(--wg-c-members) !important;
+  border-left: var(--wg-border) !important;
+}
+
+/* ───────── 8. 정보 없는 래퍼 투명 ───────── */
+.stack_TWWX0S, .listItem_rwEpIL, .folderGroup_RTMSuZ, .content_tqapBM, .positionedContainer_ysO7Gy,
+.container_HCz34G, .containerDefault_Wx6SnQ, .wrapper_TNyK-N, .wrapper_yOdhm_, .container_reDhww,
+.list_YUoOxm, .list_6Du7S1, .draggable_xIeVT2, .body_8eCwJY, .gameWrapper_PY60v2, .container_9U6LUN,
+.connection_9U6LUN, .inner_9U6LUN, .actionButtons_9U6LUN, .buttons_g6VwXp, .upperContainer_ybUK7Z,
+.children_ybUK7Z, .toolbar_ybUK7Z, .scrollerContent_8AE1Qq, .scrollerInner_8AE1Qq, .messageListItem_SY_P2T,
+.channelBottomBarArea_z_gUBg, .layerContainer_VVADeK, .membersGroup_86es0b, .container_J1Adu_,
+.childContainer_J1Adu_, .layout_J1Adu_ {
+  background: transparent !important;
+}
+
+/* ───────── 9. 마우스 올림 / 선택 ───────── */
+.link_TNyK-N { background: transparent !important; }
+.wrapper_TNyK-N:hover .link_TNyK-N { background: var(--wg-hover) !important; }
+.modeSelected_TNyK-N .link_TNyK-N, .modeConnected_TNyK-N .link_TNyK-N { background: var(--wg-selected) !important; }
+.voiceUser_YUoOxm { background: transparent !important; }
+.voiceUser_YUoOxm:hover { background: var(--wg-hover) !important; }
+.message_SY_P2T:hover { background: var(--wg-hover) !important; }
+.container_J1Adu_:hover .childContainer_J1Adu_ { background: var(--wg-hover) !important; }
+.guildDropdown_XH4OpX:hover, .header_XH4OpX:hover { background: var(--wg-hover) !important; }
+.clickable_ybUK7Z:hover, .clickable_fErCLM:hover, .chip_Og6w3q:hover, .inviteButton_XH4OpX:hover,
+.button_Y-8oZW:hover, .button_hfM7yP:hover, .button_2x8-Qn:hover, .hoverBarButton_DpHsW6:hover,
+.button_nS9Yqn:hover, .winButton_3zSH5d:not(.winButtonClose_3zSH5d):hover {
+  background: var(--wg-hover) !important;
+}
+
+/* ───────── 9-1. DM 목록 ───────── */
+.privateChannels_u88IQl, .searchBar_u88IQl, .scroller_Bce46W, .friendsButtonContainer_u88IQl,
+.wrapper_hjotnx, .privateChannelsHeaderContainer_Bce46W, .channel_zln_tS, .link_zln_tS {
+  background: transparent !important;
+}
+.searchBar_u88IQl { border-bottom: var(--wg-border) !important; box-shadow: none !important; }
+.interactive_zln_tS { background: transparent !important; }
+.interactive_zln_tS:hover { background: var(--wg-hover) !important; }
+.interactive_zln_tS.interactiveSelected_zln_tS { background: var(--wg-selected) !important; }
+
+/* ───────── 9-2. DM 오른쪽 프로필 패널 ───────── */
+.aside_HbUF2J {
+  background: var(--wg-c-members) !important;
+  border-left: var(--wg-border) !important;
+}
+.outer_P1YEjQ.user-profile-sidebar {
+  --profile-gradient-primary-color: transparent !important;
+  --profile-gradient-secondary-color: transparent !important;
+  --profile-gradient-modal-background-color: transparent !important;
+  background: transparent !important;
+}
+.outer_P1YEjQ.user-profile-sidebar .inner_P1YEjQ, .scrollerFade_S_xUx6, .wrapper_xpwejc, .header_S_xUx6,
+.body_A7qlid, .info_A7qlid, .cards_A7qlid, .container_M2WrKU, .cardsList_M2WrKU, .redesignFooter_YBm90d {
+  background: transparent !important;
+}
+.redesignFooter_YBm90d { border-top: var(--wg-border) !important; }
+
+/* ───────── 9-2b. 음성/영상 통화 + 옆 텍스트 채팅 ───────── */
+.wrapper_hbKzX7, .callContainer_hbKzX7, .root_rTsZa_, .videoControls_rTsZa_, .controlSection_rTsZa_,
+.edgeControls_rTsZa_, .centerControls_rTsZa_, .wrapper_9bvEB0, .buttonSection_9bvEB0, .headerWrapper_hbKzX7,
+.subtitleContainer_neq5ug, .headerBar_neq5ug, .videoGridWrapper_QKgWuD, .scroller_EwKtHG, .listItems_EwKtHG,
+.row_xFRALB, .tile_xFRALB, .tileSizer_xFRALB, .channelChatWrapper_hbKzX7, .content_z_gUBg.noChat_z_gUBg,
+.chatLayerWrapper_FrbQJp, .container_FrbQJp, .chat_fjXxyy, .container_ybUK7Z.themed_ybUK7Z, .wrapper_gFyPwI {
+  background: transparent !important;
+}
+.chatLayerWrapper_FrbQJp > .container_FrbQJp:not(.chatTarget_FrbQJp) {
+  background: var(--wg-c-chat) !important;
+  border-left: var(--wg-border) !important;
+}
+.gradientTop_rTsZa_, .gradientBottom_rTsZa_ { display: none !important; }
+.container_ybUK7Z.themed_ybUK7Z { border-bottom: var(--wg-border) !important; }
+
+/* ───────── 9-3. ::before / ::after 배경 투명 ───────── */
+:is(.sidebar_pog62O, .sidebarList_pog62O, .container_H5ozaj, .panels_pog62O, .chat_z_gUBg,
+  .channelArea_z_gUBg, .content_z_gUBg, .membersWrap_86es0b, .members_86es0b, .privateChannels_u88IQl,
+  .searchBar_u88IQl, .scroller_Bce46W, .interactive_zln_tS, .link_zln_tS, .channel_zln_tS, .aside_HbUF2J,
+  .outer_P1YEjQ.user-profile-sidebar, .outer_P1YEjQ.user-profile-sidebar .inner_P1YEjQ, .scrollerFade_S_xUx6,
+  .header_S_xUx6, .body_A7qlid, .redesignFooter_YBm90d, .wrapper_hbKzX7, .callContainer_hbKzX7, .root_rTsZa_,
+  .videoGridWrapper_QKgWuD, .chatLayerWrapper_FrbQJp, .container_FrbQJp, .chat_fjXxyy)::after {
+  background: transparent !important;
+}
+:is(.sidebar_pog62O, .sidebarList_pog62O, .container_H5ozaj, .panels_pog62O, .chat_z_gUBg,
+  .channelArea_z_gUBg, .content_z_gUBg, .membersWrap_86es0b, .members_86es0b, .privateChannels_u88IQl,
+  .searchBar_u88IQl, .scroller_Bce46W, .interactive_zln_tS, .link_zln_tS, .channel_zln_tS, .aside_HbUF2J,
+  .outer_P1YEjQ.user-profile-sidebar, .outer_P1YEjQ.user-profile-sidebar .inner_P1YEjQ, .scrollerFade_S_xUx6,
+  .header_S_xUx6, .body_A7qlid, .redesignFooter_YBm90d, .wrapper_hbKzX7, .callContainer_hbKzX7, .root_rTsZa_,
+  .videoGridWrapper_QKgWuD, .chatLayerWrapper_FrbQJp, .container_FrbQJp, .chat_fjXxyy)::before {
+  background: transparent !important;
+}
+
+/* ───────── 10. 팝업창 (설정, 이모지, 프로필, 메뉴, 모달) ───────── */
+[role="dialog"]:not([class*="positionContainer_"]), [role="menu"], [class*="standardSidebarView_"],
+[class*="userPopoutOuter_"], [class*="userProfileOuter_"], [class*="popout_"], [class*="modal_"],
+[class*="root_"][class*="small_"], [class*="root_"][class*="medium_"], [class*="root_"][class*="large_"] {
+  background: var(--wg-popup-tint) !important;
+  backdrop-filter: blur(var(--wg-popup-blur)) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18) !important;
+}
+[class*="standardSidebarView_"] { backdrop-filter: none !important; box-shadow: none !important; }
+
+.positionLayer_58b0l2, .positionContainer_58b0l2, .drawerSizingWrapper_58b0l2 {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+.contentWrapper_58b0l2 {
+  background: var(--wg-popup-tint) !important;
+  backdrop-filter: blur(var(--wg-popup-blur)) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18) !important;
+}
+.nav_58b0l2, .navList_58b0l2, .container_rfDq2B, .header_rfDq2B, .content_rfDq2B, .container_d2GpC2 {
+  background: transparent !important;
+}
+.navButton_58b0l2:hover { background: var(--wg-hover) !important; }
+.navButtonActive_58b0l2 { background: var(--wg-selected) !important; }
+[class*="sidebarRegion_"], [class*="sidebarRegionScroller_"], [class*="contentRegion_"],
+[class*="contentRegionScroller_"], [class*="contentColumn_"] { background: transparent !important; }
+[class*="sidebarRegion_"] { border-right: var(--wg-border) !important; }
+
+:is([role="dialog"], [role="menu"], [class*="standardSidebarView_"],
+  [class*="contentWrapper_"]:has([class*="emojiPicker"], [class*="gifPicker"], [class*="stickerPicker"]),
+  [class*="emojiPicker_"], [class*="userPopoutOuter_"], [class*="userProfileOuter_"],
+  [class*="popout_"], [class*="modal_"],
+  [class*="root_"]:is([class*="small_"], [class*="medium_"], [class*="large_"]))
+:is([class*="scroller"], [class*="Scroller"], [class*="wrapper_"], [class*="Wrapper_"],
+  [class*="container_"], [class*="Container_"], [class*="content_"], [class*="Content_"],
+  [class*="inner_"], [class*="Inner_"], [class*="header_"], [class*="Header_"],
+  [class*="footer_"], [class*="Footer_"], [class*="body_"], [class*="Body_"],
+  [class*="section_"], [class*="Section_"], [class*="list_"], [class*="List_"],
+  [class*="nav_"], [class*="sidebar_"], [class*="grid_"],
+  [class*="categoryList"], [class*="emojiPicker_"], [class*="gifPicker"], [class*="stickerPicker"])
+:not(button, input, textarea, select,
+  [role="button"], [role="switch"], [role="checkbox"], [role="radio"], [role="slider"],
+  [role="textbox"], [role="combobox"], [role="tab"], [role="menuitem"],
+  [class*="button"], [class*="Button"], [class*="input"], [class*="Input"], [class*="search"], [class*="Search"],
+  [class*="switch"], [class*="Switch"], [class*="checkbox"], [class*="Checkbox"],
+  [class*="toggle"], [class*="Toggle"], [class*="slider"], [class*="Slider"],
+  [class*="badge"], [class*="Badge"], [class*="tag"], [class*="Tag"],
+  [class*="chiplet"], [class*="nameplate"], [class*="Nameplate"],
+  [class*="avatar"], [class*="Avatar"], [class*="banner"], [class*="Banner"],
+  [class*="emojiItem"], [class*="tooltip"], [class*="Tooltip"], [style*="background"]) {
+  background: transparent !important;
+}
+
+[role="menu"] [role="menuitem"]:is(:hover, :focus, [class*="focused"]),
+[class*="standardSidebarView_"] [role="tab"]:hover,
+[class*="emojiItem"]:hover { background: var(--wg-hover) !important; }
+[class*="standardSidebarView_"] [role="tab"][aria-selected="true"] { background: var(--wg-selected) !important; }
+
+/* ───────── 11. 영역별 블러 ───────── */
+.sidebarList_pog62O > nav, .panels_pog62O, .membersWrap_86es0b, .aside_HbUF2J, .guilds_pog62O {
+  backdrop-filter: blur(var(--wg-blur-side)) saturate(1.3) contrast(1.1) !important;
+}
+/* 채팅 블러는 메시지 칸에만 (바깥 채팅 영역에 걸면 안쪽 멤버 목록 블러가 배경 그림을 못 봄) */
+.chat_z_gUBg { backdrop-filter: none !important; }
+.chatContent_z_gUBg, .chatLayerWrapper_FrbQJp > .container_FrbQJp:not(.chatTarget_FrbQJp) {
+  backdrop-filter: blur(var(--wg-blur-chat)) saturate(1.2) !important;
+}
+
+/* ───────── 12. 만화 느낌: 별·반짝이·하트 무늬 ───────── */
+/* 채널 목록: 같은 색 그대로, 오른쪽으로 갈수록 어둡게 */
+:root { --wg-channels-shade: rgba(0, 0, 0, 0.40); }
+html .sidebarList_pog62O > nav {
+  background:
+    var(--wg-pattern) 0 0 / var(--wg-pattern-size) var(--wg-pattern-size),
+    linear-gradient(to right, transparent, var(--wg-channels-shade)),
+    var(--wg-c-channels) !important;
+}
+html .guilds_pog62O {
+  background: var(--wg-pattern) 0 0 / var(--wg-pattern-size) var(--wg-pattern-size), var(--wg-c-guilds) !important;
+}
+/* 하단 프로필 패널: 무늬 없이 색 + 블러만 */
+html .panels_pog62O {
+  background: var(--wg-c-panels) !important;
+  backdrop-filter: blur(var(--wg-blur-panels)) saturate(1.3) !important;
+  border-radius: var(--wg-panels-radius) !important;
+  overflow: hidden !important;
+}
+html .membersWrap_86es0b, html .aside_HbUF2J {
+  background: var(--wg-pattern) 120px 70px / var(--wg-pattern-size) var(--wg-pattern-size), var(--wg-c-members) !important;
+  backdrop-filter: blur(var(--wg-blur-members)) saturate(1.3) contrast(1.1) !important;
+}
+
+/* 채팅 상단 바 오른쪽: 멤버 목록과 같은 색을 멤버 목록 너비만큼 */
+:root { --wg-members-w: 256px; }
+html .title_z_gUBg {
+  position: relative !important;
+  isolation: isolate !important;
+  background: linear-gradient(to left, transparent var(--wg-members-w), var(--wg-c-chatheader) var(--wg-members-w)) !important;
+}
+html .title_z_gUBg::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  width: var(--wg-members-w) !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  background: var(--wg-pattern) 120px 70px / var(--wg-pattern-size) var(--wg-pattern-size), var(--wg-c-members) !important;
+  backdrop-filter: blur(var(--wg-blur-members)) saturate(1.3) contrast(1.1) !important;
+}
+
+/* 영역 경계: 양옆 테두리 없음, 나머지는 얇은 흰 선 */
+html .guilds_pog62O { border-right: none !important; }
+html .sidebarList_pog62O { border-right: none !important; }
+html .membersWrap_86es0b, html .aside_HbUF2J { border-left: none !important; }
+html .chatLayerWrapper_FrbQJp > .container_FrbQJp:not(.chatTarget_FrbQJp) { border-left: none !important; }
+html .panels_pog62O, html .panel_8eCwJY, html .wrapper_9U6LUN { border: none !important; }
+html .base_pog62O > .bar_3zSH5d { border-bottom: 1px solid rgba(255, 255, 255, 0.35) !important; }
+
+/* 선택 / 마우스 올림 색 */
+html .modeSelected_TNyK-N .link_TNyK-N,
+html .modeConnected_TNyK-N .link_TNyK-N,
+html .interactive_zln_tS.interactiveSelected_zln_tS {
+  background: linear-gradient(90deg, rgba(255, 120, 60, 0.45), rgba(255, 90, 140, 0.25)) !important;
+  box-shadow: inset 3px 0 0 #ffd23f !important;
+}
+html .wrapper_TNyK-N:hover .link_TNyK-N,
+html .interactive_zln_tS:hover,
+html .container_J1Adu_:hover .childContainer_J1Adu_ {
+  background: rgba(255, 210, 63, 0.14) !important;
+}
+
+/* 텍스트 그림자 전부 없음 */
+*, *::before, *::after { text-shadow: none !important; }
+
+/* 메시지 입력창: 살짝 밝은 유리 */
+.scrollableContainer_2x8-Qn.themedBackground_2x8-Qn {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
