@@ -346,10 +346,9 @@ html, body { background: transparent !important; }
 .sidebarList_pog62O > nav, .panels_pog62O, .membersWrap_86es0b, .aside_HbUF2J, .guilds_pog62O {
   backdrop-filter: blur(var(--wg-blur-side)) saturate(1.3) contrast(1.1) !important;
 }
-/* 채팅 블러는 메시지 칸에만 (바깥 채팅 영역에 걸면 안쪽 멤버 목록 블러가 배경 그림을 못 봄) */
-.chat_z_gUBg { backdrop-filter: none !important; }
-.chatContent_z_gUBg, .chatLayerWrapper_FrbQJp > .container_FrbQJp:not(.chatTarget_FrbQJp) {
-  backdrop-filter: blur(var(--wg-blur-chat)) saturate(1.2) !important;
+/* 채팅 영역: 블러 없음 */
+.chat_z_gUBg, .chatContent_z_gUBg, .chatLayerWrapper_FrbQJp > .container_FrbQJp:not(.chatTarget_FrbQJp) {
+  backdrop-filter: none !important;
 }
 
 /* ───────── 12. 만화 느낌: 별·반짝이·하트 무늬 ───────── */
@@ -396,6 +395,74 @@ html .title_z_gUBg::before {
   backdrop-filter: blur(var(--wg-blur-members)) saturate(1.3) contrast(1.1) !important;
 }
 
+/* 오른쪽 멤버 목록 카드: 검색창 줄 + 멤버 목록을 한 덩어리로, 위아래 살짝 띄우고 왼쪽 모서리만 둥글게 */
+:root { --wg-members-gap: 8px; --wg-members-radius: 28px; }
+html .title_z_gUBg::before {
+  top: var(--wg-members-gap) !important;
+  border-radius: var(--wg-members-radius) 0 0 0 !important;
+}
+html .membersWrap_86es0b, html .aside_HbUF2J {
+  margin-bottom: var(--wg-members-gap) !important;
+  border-radius: 0 0 0 var(--wg-members-radius) !important;
+  overflow: hidden !important;
+}
+
+/* 멤버 목록 가독성: 무늬 위에 짙은 막을 한 겹 더 깔아 글자가 또렷하게 */
+html .membersWrap_86es0b, html .aside_HbUF2J {
+  background:
+    linear-gradient(to bottom, rgba(0, 18, 26, 0.35), rgba(0, 18, 26, 0.55)),
+    var(--wg-pattern) 120px 70px / var(--wg-pattern-size) var(--wg-pattern-size),
+    var(--wg-c-members) !important;
+}
+/* 멤버 한 줄: 양옆 여백 + 둥근 알약 모양, 올리면 옅은 청록빛 */
+html .members_86es0b .container_J1Adu_ { padding: 0 8px !important; }
+html .members_86es0b .childContainer_J1Adu_ {
+  border-radius: 12px !important;
+}
+html .members_86es0b .container_J1Adu_:hover .childContainer_J1Adu_ {
+  background: rgba(140, 235, 245, 0.13) !important;
+}
+/* 이름은 조금 굵게 */
+html .members_86es0b [class*="name_"] { font-weight: 600 !important; }
+/* 오프라인 멤버도 읽을 수 있게 덜 흐리게 */
+html .members_86es0b [class*="offline_"] { opacity: 0.6 !important; }
+/* 그룹 제목 (활동 · BOT · 온라인 · 오프라인): 밝은 청록 + 굵게 */
+html .membersGroup_86es0b {
+  color: #9eeef5 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.6px !important;
+  padding-left: 16px !important;
+}
+html .membersGroup_86es0b * { color: inherit !important; }
+
+/* 채팅 상단 바 검색창: 테두리 없이 멤버 목록과 같은 짙은 청록 */
+html .search_bWCaDq, html .search_i16Ad0, html .searchBar_i16Ad0, html .searchBar_uNafB1,
+html .editor_uNafB1, html .icon_i16Ad0,
+html .search_bWCaDq::before, html .search_bWCaDq::after,
+html .search_i16Ad0::before, html .search_i16Ad0::after,
+html .searchBar_i16Ad0::before, html .searchBar_i16Ad0::after {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
+/* 카드의 둥근 위 모서리 밖으로 안 나가게: 아래·안쪽으로 살짝 들여서 배치 */
+html .search_bWCaDq { transform: translateY(5px) !important; }
+html .searchBar_i16Ad0.searchBar_uNafB1 {
+  box-sizing: border-box !important;
+  margin-left: 14px !important;
+  width: calc(100% - 14px) !important;
+  background: rgba(0, 22, 30, 0.55) !important;
+  border-radius: 999px !important;
+  transition: background-color 0.25s ease !important;
+}
+html .searchBar_i16Ad0.searchBar_uNafB1:is(:hover, :focus-within) {
+  background: rgba(0, 30, 40, 0.8) !important;
+}
+html .searchBar_uNafB1 [data-slate-placeholder] { color: rgba(190, 235, 240, 0.65) !important; }
+html .searchBar_uNafB1 .editor_uNafB1 { color: #fff !important; }
+html .icon_i16Ad0 svg { color: #ffd23f !important; }
+
 /* 영역 경계: 양옆 테두리 없음, 나머지는 얇은 흰 선 */
 html .guilds_pog62O { border-right: none !important; }
 html .sidebarList_pog62O { border-right: none !important; }
@@ -403,6 +470,91 @@ html .membersWrap_86es0b, html .aside_HbUF2J { border-left: none !important; }
 html .chatLayerWrapper_FrbQJp > .container_FrbQJp:not(.chatTarget_FrbQJp) { border-left: none !important; }
 html .panels_pog62O, html .panel_8eCwJY, html .wrapper_9U6LUN { border: none !important; }
 html .base_pog62O > .bar_3zSH5d { border-bottom: 1px solid rgba(255, 255, 255, 0.35) !important; }
+/* 채팅 상단 바 아이콘 줄 왼쪽의 회색 그림자 (.children::after) 투명 */
+html .children_ybUK7Z::after {
+  background: none !important;
+  box-shadow: none !important;
+}
+/* 채팅 상단 바 오른쪽 아이콘(스레드·알림·고정·멤버): 어두운 유리 원 + 흰 아이콘, 올리면 노란색 */
+html .toolbar_ybUK7Z { gap: 6px !important; align-items: center !important; }
+html .toolbar_ybUK7Z [class*="iconWrapper_"] {
+  width: 30px !important;
+  height: 30px !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  background: rgba(14, 12, 40, 0.62) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 2px 6px rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: blur(6px) !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+html .toolbar_ybUK7Z [class*="iconWrapper_"] svg { color: inherit !important; width: 18px !important; height: 18px !important; }
+html .toolbar_ybUK7Z [class*="iconWrapper_"]:hover {
+  background: #ffd23f !important;
+  color: #111018 !important;
+  transform: rotate(-6deg) scale(1.08) !important;
+}
+/* 켜져 있는 아이콘(예: 멤버 목록 열림): 노란 테두리 + 노란 아이콘 */
+html .toolbar_ybUK7Z [class*="iconWrapper_"][class*="selected"] {
+  color: #ffd23f !important;
+  box-shadow: inset 0 0 0 1.5px #ffd23f, 0 2px 6px rgba(0, 0, 0, 0.35) !important;
+}
+/* 맨 위 타이틀바 오른쪽 (친구 수 · 받은 편지함 · 도움말 · 창 버튼): 어두운 유리 알약 + 흰 아이콘, 올리면 노란색 */
+html .bar_3zSH5d [class*="trailing_"]:not([class*="trailing_"] *) {
+  /* 위쪽에 붙은 띠: 위·오른쪽·아래는 직선, 왼쪽 아래만 크게 휘어짐 */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 4px !important;
+  box-sizing: border-box !important;
+  width: var(--wg-members-w) !important;
+  min-width: var(--wg-members-w) !important;
+  flex-shrink: 0 !important;
+  align-self: stretch !important;
+  margin: 0 !important;
+  padding: 0 8px 0 36px !important;
+  border-radius: 0 0 0 36px / 0 0 0 100% !important;
+  background: rgba(14, 12, 40, 0.78) !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(6px) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+html .bar_3zSH5d [class*="trailing_"] :is([role="button"], button, [class*="clickable"]) {
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 999px !important;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease !important;
+}
+html .bar_3zSH5d [class*="trailing_"] :is([role="button"], button, [class*="clickable"]):hover {
+  background: #ffd23f !important;
+  color: #111018 !important;
+  transform: rotate(-6deg) scale(1.08) !important;
+}
+/* 최소화 · 최대화 · 닫기: 둥근 모서리, 올리면 노란색 (닫기는 분홍) */
+html .winButton_3zSH5d {
+  color: rgba(255, 255, 255, 0.85) !important;
+  border-radius: 8px !important;
+  transition: background-color 0.25s ease, color 0.25s ease !important;
+}
+html .winButton_3zSH5d:not(.winButtonClose_3zSH5d):hover {
+  background: #ffd23f !important;
+  color: #111018 !important;
+}
+html .winButton_3zSH5d.winButtonClose_3zSH5d:hover {
+  background: #ff4fa3 !important;
+  color: #fff !important;
+}
+/* 서버 이름 헤더 · 채팅 상단 바 아래 가로선 없음 */
+html .container_XH4OpX,
+html .title_z_gUBg,
+html .container_ybUK7Z,
+html .container_ybUK7Z.themed_ybUK7Z {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
 
 /* 선택 / 마우스 올림 색 */
 html .modeSelected_TNyK-N .link_TNyK-N,
@@ -415,6 +567,16 @@ html .wrapper_TNyK-N:hover .link_TNyK-N,
 html .interactive_zln_tS:hover,
 html .container_J1Adu_:hover .childContainer_J1Adu_ {
   background: rgba(255, 210, 63, 0.14) !important;
+}
+
+/* 커서 올릴 때 색이 부드럽게 바뀜 */
+:root { --wg-hover-speed: 0.25s; }
+html :is(.link_TNyK-N, .interactive_zln_tS, .childContainer_J1Adu_, .message_SY_P2T, .voiceUser_YUoOxm,
+  .guildDropdown_XH4OpX, .header_XH4OpX, .clickable_ybUK7Z, .clickable_fErCLM, .chip_Og6w3q,
+  .inviteButton_XH4OpX, .button_Y-8oZW, .button_hfM7yP, .hoverBarButton_DpHsW6, .button_nS9Yqn,
+  .winButton_3zSH5d, .navButton_58b0l2, [role="menuitem"], [role="tab"], [class*="emojiItem"]) {
+  transition: background-color var(--wg-hover-speed) ease, color var(--wg-hover-speed) ease,
+    box-shadow var(--wg-hover-speed) ease !important;
 }
 
 /* 텍스트 그림자 전부 없음 */
@@ -443,7 +605,7 @@ html .scrollableContainer_2x8-Qn.themedBackground_2x8-Qn {
   margin-right: 8px !important;
   /* 아래에서 살짝 띄우기 */
   margin-bottom: var(--wg-pop-lift) !important;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease !important;
 }
 :root { --wg-pop-lift: 8px; }
 /* 커서 올림 / 클릭(입력 중): 바탕은 자주빛, 그림자는 분홍으로 바뀜 (클릭하면 계속 유지) */
@@ -461,6 +623,21 @@ html .scrollableContainer_2x8-Qn.themedBackground_2x8-Qn:is(:hover, :focus-withi
     5px 5px 0 0 var(--wg-pop-hover-shadow),
     5px 5px 0 3px var(--wg-pop-ink) !important;
 }
+/* 입력창 가장 바깥의 옅은 흰 선 없음 (감싸는 요소들의 테두리·그림자·외곽선) */
+html .form_z_gUBg,
+html .channelTextArea_2x8-Qn,
+html .channelTextArea_2x8-Qn > div:not(.scrollableContainer_2x8-Qn) {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+html .form_z_gUBg::before, html .form_z_gUBg::after,
+html .channelTextArea_2x8-Qn::before, html .channelTextArea_2x8-Qn::after {
+  border: none !important;
+  box-shadow: none !important;
+  background: none !important;
+}
+html .scrollableContainer_2x8-Qn.themedBackground_2x8-Qn { outline: none !important; }
 /* 입력 중에는 살짝 눌린 느낌 */
 html .scrollableContainer_2x8-Qn.themedBackground_2x8-Qn:focus-within {
   transform: translate(2px, 2px) !important;
@@ -484,7 +661,7 @@ html .channelTextArea_2x8-Qn [class*="placeholder"] {
 html .channelTextArea_2x8-Qn :is(button, [role="button"]) {
   color: #fff !important;
   border-radius: 10px !important;
-  transition: background 0.12s, color 0.12s, transform 0.12s !important;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease !important;
 }
 html .channelTextArea_2x8-Qn :is(button, [role="button"]):hover {
   background: var(--wg-pop-yellow) !important;
