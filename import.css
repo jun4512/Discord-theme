@@ -446,16 +446,16 @@ html .scrollableContainer_2x8-Qn.themedBackground_2x8-Qn {
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease !important;
 }
 :root { --wg-pop-lift: 8px; }
-/* 커서 올림 / 클릭(입력 중): 바탕은 연한 보랏빛, 그림자는 연분홍으로 바뀜 (클릭하면 계속 유지) */
+/* 커서 올림 / 클릭(입력 중): 바탕은 자주빛, 그림자는 분홍으로 바뀜 (클릭하면 계속 유지) */
 :root {
-  --wg-pop-hover-bg: 74, 48, 112;
-  --wg-pop-hover-shadow: #ffa8d4;
+  --wg-pop-hover-bg: 52, 20, 78;
+  --wg-pop-hover-shadow: var(--wg-pop-pink);
 }
 html .scrollableContainer_2x8-Qn.themedBackground_2x8-Qn:is(:hover, :focus-within) {
   background:
-    linear-gradient(to right, rgba(var(--wg-pop-hover-bg), 0.88) 55%, rgba(var(--wg-pop-hover-bg), 0.66)),
+    linear-gradient(to right, rgba(var(--wg-pop-hover-bg), 0.95) 55%, rgba(var(--wg-pop-hover-bg), 0.72)),
     var(--wg-pop-dots),
-    rgba(var(--wg-pop-hover-bg), 0.88) !important;
+    rgba(var(--wg-pop-hover-bg), 0.95) !important;
   box-shadow:
     inset 0 0 0 1.5px rgba(255, 255, 255, 0.45),
     5px 5px 0 0 var(--wg-pop-hover-shadow),
