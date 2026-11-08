@@ -70,10 +70,10 @@ html, body { background: transparent !important; }
 :root {
   --wg-guild-handle: var(--wg-guild-bar-w);
   --wg-guild-top: 36px;
-  /* 빛나는 막대: 커서 닿는 너비, 보이는 선 두께, 길이, 세로 위치 */
-  --wg-guild-bar-w: 10px;
+  /* 손잡이 탭: 너비, 높이, 세로 위치 */
+  --wg-guild-bar-w: 16px;
   --wg-guild-line-w: 4px;
-  --wg-guild-bar-h: 160px;
+  --wg-guild-bar-h: 64px;
   --wg-guild-btn-top: 50%;
   --wg-discord-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z'/%3E%3C/svg%3E");
 }
@@ -118,25 +118,27 @@ html, body { background: transparent !important; }
   width: var(--wg-guild-bar-w) !important;
   height: var(--wg-guild-bar-h) !important;
   box-sizing: border-box !important;
-  /* 커서 닿는 영역은 넓게, 보이는 선은 왼쪽 4px만 (나머지는 투명 테두리) */
-  border: none !important;
-  border-right: calc(var(--wg-guild-bar-w) - var(--wg-guild-line-w)) solid transparent !important;
-  border-radius: 0 999px 999px 0 !important;
+  /* 화면 왼쪽 끝에 튀어나온 작은 탭 + 가운데 "›" 화살표 */
+  content: "›" !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1.5px solid rgba(255, 210, 63, 0.7) !important;
+  border-left: none !important;
+  border-radius: 0 12px 12px 0 !important;
   z-index: 2 !important;
   pointer-events: auto !important;
   cursor: pointer !important;
-  /* 반투명 흰빛, 가운데만 살짝 따뜻하고 위아래 끝은 흐려짐 */
-  background: linear-gradient(to bottom,
-    transparent,
-    rgba(255, 255, 255, 0.45) 22%,
-    rgba(255, 238, 200, 0.85) 50%,
-    rgba(255, 255, 255, 0.45) 78%,
-    transparent) padding-box !important;
-  box-shadow: none !important;
-  /* 빛은 선 모양을 따라 아주 은은하게 */
-  filter: drop-shadow(0 0 4px rgba(255, 236, 190, 0.35));
+  background: rgba(14, 12, 40, 0.85) !important;
+  color: #ffd23f !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.45) !important;
+  filter: none;
   transition: opacity 0.15s ease !important;
-  animation: wg-bulb-idle 4s ease-in-out infinite !important;
+  /* 화살표가 오른쪽으로 살짝씩 움직이며 "여기로 당기세요" 신호 */
+  animation: wg-handle-nudge 2.4s ease-in-out infinite !important;
 }
 /* 커서를 올리면 바로 목록이 열리고 막대는 사라짐 */
 .guilds_pog62O:is(:hover, :focus-within)::after {
@@ -144,10 +146,10 @@ html, body { background: transparent !important; }
   opacity: 0 !important;
   animation: none !important;
 }
-/* 바깥 빛만 천천히 숨 쉬듯 밝아졌다 어두워짐 */
-@keyframes wg-bulb-idle {
-  0%, 100% { opacity: 0.7; filter: drop-shadow(0 0 3px rgba(255, 236, 190, 0.25)); }
-  50% { opacity: 1; filter: drop-shadow(0 0 6px rgba(255, 236, 190, 0.5)); }
+/* 화살표만 오른쪽으로 살짝 밀렸다 돌아옴 */
+@keyframes wg-handle-nudge {
+  0%, 60%, 100% { padding-left: 0; }
+  30% { padding-left: 5px; }
 }
 
 /* ───────── 4. 채널 목록 ───────── */
