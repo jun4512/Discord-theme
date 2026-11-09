@@ -416,6 +416,45 @@ html .membersWrap_86es0b, html .aside_HbUF2J {
     var(--wg-pattern) 120px 70px / var(--wg-pattern-size) var(--wg-pattern-size),
     var(--wg-c-members) !important;
 }
+
+/* DM 오른쪽 프로필 패널: 멤버 목록 카드와 똑같이 (헤더 오른쪽 카드와 너비를 맞춰 한 덩어리로) */
+html .aside_HbUF2J,
+html .aside_HbUF2J > .outer_P1YEjQ.user-profile-sidebar {
+  width: var(--wg-members-w) !important;
+  min-width: var(--wg-members-w) !important;
+  max-width: var(--wg-members-w) !important;
+  flex: 0 0 var(--wg-members-w) !important;
+  box-sizing: border-box !important;
+}
+/* 패널 안쪽의 둥근 테두리 카드 한 겹 없애기 */
+html .aside_HbUF2J .outer_P1YEjQ.user-profile-sidebar,
+html .aside_HbUF2J .inner_P1YEjQ {
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
+html .aside_HbUF2J .outer_P1YEjQ.user-profile-sidebar { padding: 0 !important; }
+html .aside_HbUF2J .outer_P1YEjQ::before, html .aside_HbUF2J .outer_P1YEjQ::after,
+html .aside_HbUF2J .inner_P1YEjQ::before, html .aside_HbUF2J .inner_P1YEjQ::after {
+  border: none !important;
+  box-shadow: none !important;
+  background: none !important;
+}
+/* 배너: 단색이면 투명 (배너 이미지가 있는 사람은 그대로 보임) */
+html .aside_HbUF2J .banner_S_xUx6 { background-color: transparent !important; }
+/* 아래쪽을 메시지 입력창 아래 끝과 같은 높이로 맞춤 (숫자를 키우면 더 많이 뜸) */
+:root { --wg-aside-lift: 7px; }
+html .aside_HbUF2J {
+  margin-bottom: var(--wg-aside-lift) !important;
+  height: auto !important;
+  align-self: stretch !important;
+}
+/* 아래 '전체 프로필 보기' 위 가로선 없음 */
+html .aside_HbUF2J .redesignFooter_YBm90d { border-top: none !important; }
+
 /* 멤버 한 줄: 양옆 여백 + 둥근 알약 모양, 올리면 옅은 청록빛 */
 html .members_86es0b .container_J1Adu_ { padding: 0 8px !important; }
 html .members_86es0b .childContainer_J1Adu_ {
